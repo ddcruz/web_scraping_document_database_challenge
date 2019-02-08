@@ -3,7 +3,6 @@ from flask_pymongo import PyMongo
 import scrape_mars
 
 #mars_data = scrape_mars.scrape()
-
 #print(mars_data)
 
 # Create an instance of Flask
@@ -18,8 +17,12 @@ def home():
     # Find one record of data from the mongo database
     mars_data = mongo.db.mars.find_one()
 
-    # Return template and data
-    return render_template("index.html", data=mars_data)
+    if not mars_data:
+        #no data so return the blank page with the option for the user to scrape new data
+        return render_template("index1.html")
+    else:
+        # Return template and data
+        return render_template("index.html", data=mars_data)
 
 # Route that will trigger the scrape function
 @app.route("/scrape")
